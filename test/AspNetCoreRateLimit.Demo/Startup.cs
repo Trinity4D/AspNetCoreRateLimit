@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
+using AspNetCoreRateLimit.Microsoft.SqlServer;
 
 namespace AspNetCoreRateLimit.Demo
 {
@@ -29,9 +30,11 @@ namespace AspNetCoreRateLimit.Demo
             services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
 
             // register stores
-            services.AddInMemoryRateLimiting();
+            //services.AddInMemoryRateLimiting();
             //services.AddDistributedRateLimiting<AsyncKeyLockProcessingStrategy>();
             //services.AddDistributedRateLimiting<RedisProcessingStrategy>();
+            services.AddSqlServerRateLimiting();
+
             //services.AddRedisRateLimiting();
 
             services.AddMvc((options) =>

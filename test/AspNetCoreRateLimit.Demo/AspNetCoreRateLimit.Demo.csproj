@@ -17,5 +17,9 @@
 		<ProjectReference Include="..\..\src\AspNetCoreRateLimit.Redis\AspNetCoreRateLimit.Redis.csproj" />
 		<ProjectReference Include="..\..\src\AspNetCoreRateLimit\AspNetCoreRateLimit.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\..\AspNetCoreRateLimit.Microsoft.SqlServer\AspNetCoreRateLimit.Microsoft.SqlServer.csproj" />
+	</ItemGroup>
 
 </Project>
