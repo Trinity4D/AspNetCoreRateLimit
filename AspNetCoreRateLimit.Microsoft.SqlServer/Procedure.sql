@@ -1,6 +1,23 @@
-﻿IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RateLimterCache]') AND TYPE IN (N'U'))
+﻿IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RateLimterSettings]') AND TYPE IN (N'U'))
 BEGIN
-    DROP TABLE [dbo].[IncrementCounter];
+    DROP TABLE [dbo].RateLimterSettings;
+END
+
+GO
+
+CREATE TABLE RateLimterSettings (
+    [RateLimterSettingsId]       INT PRIMARY KEY,
+    [IpRateLimiting]             VARCHAR(MAX) NULL,
+    [IpRateLimitingPolicy]       VARCHAR(MAX) NULL,
+    [ClientRateLimiting]         VARCHAR(MAX) NULL,
+    [ClientRateLimitingPolicy]   VARCHAR(MAX) NULL
+);
+
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RateLimterCache]') AND TYPE IN (N'U'))
+BEGIN
+    DROP TABLE [dbo].[RateLimterCache];
 END
 
 GO
@@ -46,9 +63,9 @@ BEGIN
                 SET @ttl = @timeout;
 
             UPDATE [RateLimterCache] 
-            SET   [Key]    = CAST(@count AS VARCHAR(MAX)),
-                  [Count]  = @count,
-                  [Expiry] = DATEADD(second, @ttl, GETUTCDATE()) 
+            SET   [Key]       = CAST(@count AS VARCHAR(MAX)),
+                  [Count]     = @count,
+                  [Expiry]    = DATEADD(second, @ttl, GETUTCDATE()) 
             WHERE [CounterId] = @counterId;
         END
         ELSE
