@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using AspNetCoreRateLimit.Microsoft.SqlServer;
+using Microsoft.Extensions.Options;
 
 namespace AspNetCoreRateLimit.Demo
 {
@@ -28,6 +29,15 @@ namespace AspNetCoreRateLimit.Demo
             // configure client rate limiting middleware
             services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
             services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
+
+            //try this
+            services.AddOptions<IpRateLimitOptions>("MyConfiguration")
+                .Bind(Configuration.GetSection("IpRateLimiting"))
+            .PostConfigure(config => {
+                // Handle config changes
+                //read and write to db here and set.
+                //also cache in memory for 5 minutes
+             });
 
             // register stores
             //services.AddInMemoryRateLimiting();
